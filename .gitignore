@@ -1,0 +1,5 @@
+
+nimcache/
+*.elf
+*.bin
+cscope.out
