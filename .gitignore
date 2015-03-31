@@ -2,4 +2,5 @@
 nimcache/
 *.elf
 *.bin
+*.swp
 cscope.out

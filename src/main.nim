@@ -33,6 +33,6 @@ proc main() : cint {.exportc.} =
 
     while true:
         for x in 1..10:
-            myVolatileVar = x
+            myVolatileVar = (cint)x
 
     return cint(0)

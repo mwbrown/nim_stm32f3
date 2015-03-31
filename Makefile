@@ -1,6 +1,6 @@
 
 NIMFILE=src/main.nim
-PROJECT=nimrod_stm32
+PROJECT=nim_stm32
 
 CFLAGS:=
 CLIBS:=
@@ -25,8 +25,8 @@ clean:
 	rm -rf nimcache
 	rm -r $(PROJECT).bin $(PROJECT).elf
 
-$(PROJECT).elf: $(NIMFILE) nimrod.cfg
-	nimrod c --nimcache=$(CURDIR)/nimcache $(NIMFILE)
+$(PROJECT).elf: $(NIMFILE) nim.cfg
+	nim c --nimcache=$(CURDIR)/nimcache $(NIMFILE)
 	arm-none-eabi-gcc $(CFLAGS) -o $@ nimcache/*.o $(CLIBDIRS) $(CLIBS)
 
 %.bin: %.elf
