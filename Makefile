@@ -10,12 +10,16 @@ CLIBDIRS:=
 # Do not modify below this line.
 #
 
-CLIBDIRS  += -Llibopencm3/lib
-CLIBS     += -lopencm3_stm32f3
+OCM3_DIR  := ./libopencm3
+OCM3_LIB  := opencm3_stm32f3
+
+CLIBDIRS  += -L$(OCM3_DIR)/lib
+CLIBS     += -l$(OCM3_LIB)
 LD_SCRIPT := stm32f303vct6.ld
 
+
 CFLAGS    += -Wl,-gc-sections,-T,$(LD_SCRIPT)
-CFLAGS    += --static -nostartfiles
+CFLAGS    += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 
 .PHONY: clean all
 
@@ -23,11 +27,14 @@ all: $(PROJECT).bin
 
 clean:
 	rm -rf nimcache
-	rm -r $(PROJECT).bin $(PROJECT).elf
+	rm -f $(PROJECT).bin $(PROJECT).elf
 
-$(PROJECT).elf: $(NIMFILE) nim.cfg
+$(PROJECT).elf: $(NIMFILE) $(OCM3_DIR)/lib/lib$(OCM3_LIB).a nim.cfg
 	nim c --nimcache=$(CURDIR)/nimcache $(NIMFILE)
 	arm-none-eabi-gcc $(CFLAGS) -o $@ nimcache/*.o $(CLIBDIRS) $(CLIBS)
+
+$(OCM3_DIR)/lib/lib$(OCM3_LIB).a:
+	$(MAKE) -C $(OCM3_DIR)
 
 %.bin: %.elf
 	arm-none-eabi-objcopy $< -O binary $@

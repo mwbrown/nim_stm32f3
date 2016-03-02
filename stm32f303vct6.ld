@@ -81,7 +81,7 @@ SECTIONS
 
     /* Discard the exception handling frame (Needed for C++ only) */
 
-    /DISCARD/ : { *(.eh_frame) }
+    /*/DISCARD/ : { *(.eh_frame) }*/
     . = ALIGN(4);
     end = .;
 }
