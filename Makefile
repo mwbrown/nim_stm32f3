@@ -1,5 +1,15 @@
 
 NIMFILE=src/main.nim
+
+NIMDEPS:=
+
+NIMDEPS +=                   \
+	src/panicoverride.nim    \
+	src/rcc_pll.nim          \
+	src/stm32f3/rcc.nim      \
+	src/stm32f3/memmap.nim   \
+	src/stm32f3/ptr_macros.nim
+
 PROJECT=nim_stm32
 
 CFLAGS:=
@@ -29,7 +39,7 @@ clean:
 	rm -rf nimcache
 	rm -f $(PROJECT).bin $(PROJECT).elf
 
-$(PROJECT).elf: $(NIMFILE) $(OCM3_DIR)/lib/lib$(OCM3_LIB).a nim.cfg
+$(PROJECT).elf: $(NIMFILE) $(NIMDEPS) $(OCM3_DIR)/lib/lib$(OCM3_LIB).a nim.cfg
 	nim c --nimcache=$(CURDIR)/nimcache $(NIMFILE)
 	arm-none-eabi-gcc $(CFLAGS) -o $@ nimcache/*.o $(CLIBDIRS) $(CLIBS)
 

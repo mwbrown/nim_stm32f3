@@ -5,6 +5,8 @@
 # Entry point for system image.
 #
 
+import rcc_pll
+
 var SysTickCount {.volatile.} : cint = 0
 
 # TODO determine if Nimrod is interrupt-safe
@@ -23,6 +25,9 @@ proc main() : cint {.exportc.} =
     var myVolatileVar {.volatile.} : cint
 
     # TODO implement SysTick_Config with checking
+
+    # Initialize the system clock to the PLL (72MHz).
+    discard rcc_pll_init()
 
     systick_set_reload(8000000 * 2)
     systick_set_clocksource(1)
